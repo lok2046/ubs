@@ -23,6 +23,10 @@ public class StringAccumulator {
 
         if (input.startsWith(PREFIX_CUSTOM_DELIMITER)) {
             final String tokens[] = input.substring(PREFIX_CUSTOM_DELIMITER.length()).split(DELIMITER_NEWLINE, 2);
+            if (tokens.length != 2) {
+                return sum;
+            }
+
             final String customDelimiters = tokens[0];
             numbers = tokens[1];
 
@@ -35,15 +39,20 @@ public class StringAccumulator {
         final StringBuilder negativesSB = new StringBuilder();
 
         for (String numberToken : numberTokens) {
-            final long number = Long.parseLong(numberToken);
-            if (number < 0) {
-                if (negativesSB.length() > 0) {
-                    negativesSB.append(DELIMITER_COMMA);
+            try {
+                final long number = Long.parseLong(numberToken);
+                if (number < 0) {
+                    if (negativesSB.length() > 0) {
+                        negativesSB.append(DELIMITER_COMMA);
+                    }
+                    negativesSB.append(number);
+                    continue;
+                } else if (number <= 1000) {
+                    sum += number;
                 }
-                negativesSB.append(number);
-                continue;
-            } else if (number <= 1000) {
-                sum += number;
+            } catch (NumberFormatException ex) {
+                sum = 0;
+                return sum;
             }
         }
 

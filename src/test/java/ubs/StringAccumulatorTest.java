@@ -20,6 +20,15 @@ public class StringAccumulatorTest {
     }
 
     @Test
+    public void testInvalidInput() throws Exception {
+        assertEquals(0, sa.add("a"));
+        assertEquals(0, sa.add("1,a"));
+        assertEquals(0, sa.add("1\n2\na"));
+        assertEquals(0, sa.add("//;\n"));
+        assertEquals(0, sa.add("//;1;2"));
+    }
+
+    @Test
     public void testOneNumber() throws Exception {
         assertEquals(1, sa.add("1"));
     }
